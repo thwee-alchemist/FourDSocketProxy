@@ -21,7 +21,7 @@ Then you'll have the following commands available to you:
 ```
 fourd.clear();
 var a = fourd.add_vertex({cube: {size: 10, color: 0x000000}});
-var b = fourd.add_vertex({cube: {size: 10, color: 0x000000}});
+var b = fourd.add_vertex({cube: {size: 10, texture: 'path/to/image}});
 
 var e = fourd.add_edge(a, b);
 
@@ -29,3 +29,18 @@ fourd.remove_edge(e);
 fourd.remove_vertex(a);
 fourd.remove_vertex(b);
 ```
+
+## Design Notes
+
+FourDSocketProxy uses 
+
+* [three.js](https://threejs.org/), currently release 90, and
+* [jquery](https://jquery.org/).
+
+On the server, we have 
+
+* [express](expressjs.com), and
+* [socket.io](socket.io).
+
+I wanted a server side way of controlling what happens on a web page, and implemented the fourd proxy. 
+
