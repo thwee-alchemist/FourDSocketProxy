@@ -31,7 +31,7 @@ fourd.remove_vertex(b);
 ```
 
 ## Specifications
-runs about 250 vertices before slowing down significantly, just design around it. 
+Runs about 250 vertices before slowing down significantly, just design around it. 
 
 ## Acknowledgements
 
