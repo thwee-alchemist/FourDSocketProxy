@@ -4,11 +4,17 @@
 
 May 19th, 2018
 
+## Installation
+
+`npm install fourdsocketproxy`
+
+## Usage
+
 FourDSocketProxy comprises two systems, the browser frontend, and the socket server. 
 
 To run fourd, 
 
-`var fourd = require('FourDSocketProxyServer.js').fourd;`
+`var fourd = require('fourdsocketproxy').fourd;`
 
 Then you'll have the following commands available to you: 
 
