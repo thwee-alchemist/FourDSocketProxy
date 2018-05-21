@@ -30,7 +30,10 @@ fourd.remove_vertex(a);
 fourd.remove_vertex(b);
 ```
 
-## Design Notes
+## Specifications
+runs about 250 vertices before slowing down significantly, just design around it. 
+
+## Acknowledgements
 
 FourDSocketProxy uses 
 
@@ -41,6 +44,3 @@ On the server, we have
 
 * [express](expressjs.com), and
 * [socket.io](socket.io).
-
-I wanted a server side way of controlling what happens on a web page, and implemented the fourd proxy. 
-
