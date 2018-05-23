@@ -21,6 +21,8 @@
   "homepage": "https://github.com/thwee-alchemist/FourDSocketProxy#readme",
   "devDependencies": {
     "express": "^4.16.3",
+    "get-port": "^3.2.0",
+    "open": "0.0.5",
     "socket.io": "^2.1.1"
   }
 }
