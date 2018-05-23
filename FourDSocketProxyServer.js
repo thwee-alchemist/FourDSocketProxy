@@ -17,10 +17,11 @@ var path = require('path');
 var opn = require('opn');
 var get_port = require('get-port');
 
-var port = get_port(160100);
-server.listen(port);
-console.log('listening on port ' + port);
-opn('http://localhost:' + port);
+get_port({port: 16100}).then((port) => {
+  server.listen(port);
+  console.log('listening on localhost:' + port);
+  opn('http://localhost:' + port);
+});
 
 app.use(express.static('lib'));
 
