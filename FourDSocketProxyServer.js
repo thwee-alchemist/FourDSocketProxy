@@ -1,15 +1,26 @@
+'use strict';
+
+/*
+  FourDSocketProxyServer
+  
+  Joshua Marshall Moore
+  moore.joshua@pm.me
+  
+  May 23rd, 2018
+*/
+
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var path = require('path');
-var open = require('open');
+var opn = require('opn');
 var get_port = require('get-port');
 
 var port = get_port(160100);
 server.listen(port);
 console.log('listening on port ' + port);
-open('http://localhost:' + port);
+opn('http://localhost:' + port);
 
 app.use(express.static('lib'));
 
@@ -17,7 +28,6 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-console.log('Please open a page at http://localhost');
 var create_fourd = async function(){
   var promise = new Promise((resolve_fourd) => {
   
