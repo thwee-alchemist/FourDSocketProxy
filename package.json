@@ -1,6 +1,6 @@
 {
   "name": "fourdsocketproxy",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A socket bridge between a browser fourd instance and node.js code.",
   "main": "FourDSocketProxyServer.js",
   "directories": {
