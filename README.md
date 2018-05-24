@@ -2,32 +2,49 @@
 
 [Joshua Marshall Moore](mailto:moore.joshua@pm.me)
 
-May 19th, 2018
+May 24th, 2018
 
 ## Installation
 
-`npm install fourdsocketproxy`
+    git clone https://github.com/thwee-alchemist/FourDSocketProxy
+    npm install
+    cd FourDSocketProxy
+    node test.js
 
 ## Usage
 
 FourDSocketProxy comprises two systems, the browser frontend, and the socket server. 
 
-To run fourd, 
-
-`var fourd = require('fourdsocketproxy').fourd;`
-
-Then you'll have the following commands available to you: 
+To run fourd, import the init function, and wait for the promise to resolve, like so:
 
 ```
-fourd.clear();
-var a = fourd.add_vertex({cube: {size: 10, color: 0x000000}});
-var b = fourd.add_vertex({cube: {size: 10, texture: 'path/to/image}});
+var SIZE = 5;
+require('./FourDSocketProxyServer.js')().then(fourd =>{
+    fourd.clear();
+    var options = {cube: {size: 10, color: 0x0000ff}};
 
-var e = fourd.add_edge(a, b);
-
-fourd.remove_edge(e);
-fourd.remove_vertex(a);
-fourd.remove_vertex(b);
+    var depths = [];
+    for(var k=0; k<SIZE; k++){
+        var rows = [];
+        for(var i=0; i<SIZE; i++){
+            var column = [];
+            for(var j=0; j<SIZE; j++){
+                column.push(fourd.add_vertex(options));
+                if(j>0){
+                    fourd.add_edge(column[j], column[j-1]);
+                }
+                if(i>0){
+                    fourd.add_edge(column[j], rows[i-1][j]);
+                }
+                if(k>0){
+                    fourd.add_edge(column[j], depths[k-1][i][j]);
+                }
+            }
+            rows.push(column);
+        }
+        depths.push(rows);
+    }
+});
 ```
 
 ## Specifications
