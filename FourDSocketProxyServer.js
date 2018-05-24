@@ -23,7 +23,14 @@ module.exports = async function(options){
   var get_port = require('get-port');
   var opn = require('opn');
 
-  return get_port({port: options.port || 16100}).then(port => {
+  var options;
+  if(!options){
+    options = {
+      port: 16100
+    }
+  }
+  
+  return get_port({port: options.port}).then(port => {
     server.listen(port);
     var address = `http://localhost:${port}`;
     console.log('server listening at ' + address);
