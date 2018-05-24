@@ -9,106 +9,75 @@
   May 23rd, 2018
 */
 
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var path = require('path');
-var opn = require('opn');
-var get_port = require('get-port');
-
-get_port({port: 16100}).then((port) => {
-  server.listen(port);
-  console.log('listening on localhost:' + port);
-  opn('http://localhost:' + port);
-});
-
-app.use(express.static('lib'));
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
-
-var create_fourd = async function(){
-  var promise = new Promise((resolve_fourd) => {
+module.exports = async function(options){
+  var express = require('express');
+  var app = express();
   
-    io.on('connection', function(socket){
-      console.log('Page connected...');
-      
-      var FourDMirror = function(){
-        this.vertex_id = 0;
-        this.edge_id = 0;
-        this.vertices = new Set();
-        this.edges = new Set();
-      };
-      
-      FourDMirror.prototype.add_vertex = function(){
-        var id = this.vertex_id++;
-        this.vertices.add(id);
-        return id;
-      };
-      
-      FourDMirror.prototype.remove_vertex = function(id){
-        this.vertices.delete(id);
-      }
-  
-      
-      FourDMirror.prototype.add_edge = function(){
-        var id = this.edge_id++;
-        this.edges.add(id);
-        return id; 
-      };
-      
-      FourDMirror.prototype.remove_edge = function(id){
-        this.edges.delete(id);
-      };
-      
-      FourDMirror.prototype.clear = function(){
-        this.vertex_id = 0;
-        this.edge_id = 0;
-        
-        this.vertices.clear();
-        this.edges.clear();
-      };
-      
-      var mirror = new FourDMirror();
-      
-      fourd = {
-        add_vertex: function(options){
-          socket.emit('add vertex', options);
-          return mirror.add_vertex();
-        },
-
-        add_edge: function(a, b){
-          socket.emit('add edge', {source: a, target: b});
-          return mirror.add_edge();
-        },
-
-        remove_vertex: function(id){
-          socket.emit('remove vertex', id);
-          mirror.remove_vertex(id);
-        },
-
-        remove_edge: function(id){
-          socket.emit('remove edge', id);
-          mirror.remove_edge(id);
-        },
-
-        clear: function(){
-          socket.emit('clear');
-          mirror.clear();
-        },
-        
-        vertices: mirror.vertices,
-        edges: mirror.edges
-      };
-      
-      resolve_fourd(fourd);
-    });
+  app.use(express.static('lib'));
+  app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
   });
   
-  fourd = await promise;
-  return fourd;
-};
+  var server = require('http').Server(app);
+  var FourDMirror = require('./FourDMirror.js');
+  var get_port = require('get-port');
+  var opn = require('opn');
 
-module.exports.fourd = create_fourd();
+  return get_port({port: options.port || 16100}).then(port => {
+    server.listen(port);
+    var address = `http://localhost:${port}`;
+    console.log('server listening at ' + address);
+    opn(address);
+    
+    var io_promise = new Promise(resolve_io => {
+      var io = require('socket.io')(server);
+      resolve_io(io);
+    });
+
+    return io_promise;
+  }).then(function(io){
+    class FourD{
+      constructor(io, mirror){
+        this.io = io;
+        this.mirror = mirror;
+        this.vertices = mirror.vertices;
+        this.edges = mirror.edges;
+        return this;
+      }
+
+      add_vertex(options){
+        this.io.emit('add vertex', options);
+        return this.mirror.add_vertex();
+      }
+
+      add_edge(a, b){
+        this.io.emit('add edge', {source: a, target: b});
+        return this.mirror.add_edge();
+      }
+
+      remove_vertex(id){
+        this.io.emit('remove vertex', id);
+        this.mirror.remove_vertex(id);
+      }
+
+      remove_edge(id){
+        this.io.emit('remove edge', id);
+        this.mirror.remove_edge(id);
+      }
+
+      clear(){
+        this.io.emit('clear');
+        this.mirror.clear();
+      }
+    }
+
+    var fourd_promise = new Promise(resolve_fourd => {
+      io.on('connection', (socket) => {
+        var fourd = new FourD(io, new FourDMirror()); 
+        resolve_fourd(fourd);
+      });
+    });
+
+    return fourd_promise;
+  });
+};
