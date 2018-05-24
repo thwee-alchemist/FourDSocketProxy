@@ -6,7 +6,7 @@ May 24th, 2018
 
 ## Installation
 
-    git clone https://github.com/thwee-alchemist/FourDSocketProxy
+    git clone https://github.com/thwee-alchemist/FourDSocketProxy.git
     npm install
     cd FourDSocketProxy
     node test.js
