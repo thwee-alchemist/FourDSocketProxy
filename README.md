@@ -22,7 +22,7 @@ To run fourd, import the init function, and wait for the promise to resolve, lik
 
 ```js
 var SIZE = 5;
-require('./FourDSocketProxyServer.js')().then(fourd =>{
+require('fourdsocketproxy')().then(fourd =>{
     fourd.clear();
     var options = {cube: {size: 10, color: 0x0000ff}};
 
