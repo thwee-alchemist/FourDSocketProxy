@@ -6,10 +6,7 @@ May 24th, 2018
 
 ## Installation
 
-    git clone https://github.com/thwee-alchemist/FourDSocketProxy.git
-    npm install
-    cd FourDSocketProxy
-    node test.js
+    npm install fourdsocketproxy
 
 ## Usage
 
@@ -17,7 +14,7 @@ FourDSocketProxy comprises two systems, the browser frontend, and the socket ser
 
 To run fourd, import the init function, and wait for the promise to resolve, like so:
 
-```
+```js
 var SIZE = 5;
 require('./FourDSocketProxyServer.js')().then(fourd =>{
     fourd.clear();
@@ -47,8 +44,27 @@ require('./FourDSocketProxyServer.js')().then(fourd =>{
 });
 ```
 
-## Specifications
-Runs about 250 vertices before slowing down significantly, just design around it. 
+## Options
+The add_vertex function takes a number of options:
+
+```js
+var options = {cube: {size: 10, color: 0x000000}};
+// or
+var options = {cube: {size: 10, texture: 'path/to/img.jpg'}}
+```
+
+## Callbacks
+The fourd object is an EventEmitter, you can react to clicks on an individual vertex like so: 
+
+```js
+// initialization, as above ...
+fourd.on('click', event => {
+    console.log(`mouse click! button: ${event.button_id}, vertex_id: ${event.vertex_id}.`);
+});
+```
+
+## Etc.
+The FourD frontend runs about 250 vertices. More are possible, but you might want to design around this limitation. 
 
 ## Acknowledgements
 
