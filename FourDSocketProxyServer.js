@@ -12,14 +12,15 @@
 module.exports = async function(options){
   var express = require('express');
   var app = express();
+  var path = require('path');
   
-  app.use(express.static('lib'));
+  app.use(express.static(path.join(__dirname, 'lib')));
   app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(path.join(__dirname, 'index.html'));
   });
   
   var server = require('http').Server(app);
-  var FourDMirror = require('./FourDMirror.js');
+  var FourDMirror = require(path.join(__dirname, 'FourDMirror.js'));
   var get_port = require('get-port');
   var opn = require('opn');
 
@@ -76,12 +77,19 @@ module.exports = async function(options){
         this.io.emit('clear');
         this.mirror.clear();
       }
+      
+      on_click(event){
+        // override this method as needed
+        console.log(`mouse click: vertex ${event.vertex_id}, button: ${event.button_id}`);
+      }
     }
 
     var fourd_promise = new Promise(resolve_fourd => {
       io.on('connection', (socket) => {
         var fourd = new FourD(io, new FourDMirror()); 
         resolve_fourd(fourd);
+        
+        socket.on('mouse click', fourd.on_click);
       });
     });
 
