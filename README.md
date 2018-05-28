@@ -44,8 +44,23 @@ require('./FourDSocketProxyServer.js')().then(fourd =>{
 });
 ```
 
+## API
+Calling `require('fourdsocketproxy')` doesn't do much, but returns a function; Call it, and you get a promise for a `fourd` object. The `fourd` object defines the following functions:
+
+```js
+var a = fourd.add_vertex(vertex_options);
+var b = fourd.add_vertex(vertex_options);
+
+var e = fourd.add_edge(a, b);
+
+fourd.remove_edge(e);
+fourd.remove_vertex(a);
+fourd.clear();
+```
+
+
 ## Options
-The add_vertex function takes a number of options:
+The add_vertex function takes a small number of options:
 
 ```js
 var options = {cube: {size: 10, color: 0x000000}};
