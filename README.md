@@ -4,6 +4,12 @@
 
 May 24th, 2018
 
+## Overview
+
+![10 by 10 grid](grid.png)
+
+FourD is a browser library for dynamically displaying force directed graphs. FourDSocketProxy brings that power to Node.js. 
+
 ## Installation
 
     npm install fourdsocketproxy
@@ -58,7 +64,6 @@ fourd.remove_vertex(a);
 fourd.clear();
 ```
 
-
 ## Options
 The add_vertex function takes a small number of options:
 
@@ -92,3 +97,5 @@ On the server, we have
 
 * [express](expressjs.com), and
 * [socket.io](socket.io).
+
+And of course many thanks go out to Dr. Todd Veldhuizen for publishing [Dynamic Multilevel Graph Visualization](https://arxiv.org/abs/0712.1549).
