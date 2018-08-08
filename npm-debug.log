@@ -1,0 +1,96 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--upgrade',
+1 verbose cli   'fourdsocketproxy' ]
+2 info using npm@3.10.10
+3 info using node@v6.14.3
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData fourdsocketproxy
+8 silly fetchNamedPackageData fourdsocketproxy
+9 silly mapToRegistry name fourdsocketproxy
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'fourdsocketproxy',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'fourdsocketproxy',
+12 silly mapToRegistry   name: 'fourdsocketproxy',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/fourdsocketproxy
+14 verbose request uri https://registry.npmjs.org/fourdsocketproxy
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 9:42:14 PM
+17 verbose request id edbf675057c8c261
+18 verbose etag W/"494c9e75626f23d5aafcd3f7f43d22f9"
+19 verbose lastModified Mon, 28 May 2018 22:19:56 GMT
+20 http request GET https://registry.npmjs.org/fourdsocketproxy
+21 http 304 https://registry.npmjs.org/fourdsocketproxy
+22 verbose headers { date: 'Wed, 08 Aug 2018 04:42:14 GMT',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'set-cookie': [ '__cfduid=d42059ba43799dbf06ff5b4cc2eebc0901533703334; expires=Thu, 08-Aug-19 04:42:14 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   'cf-cache-status': 'MISS',
+22 verbose headers   'cf-ray': '446f50b148995f8d-LAS',
+22 verbose headers   etag: '"494c9e75626f23d5aafcd3f7f43d22f9"',
+22 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+22 verbose headers   'last-modified': 'Mon, 28 May 2018 22:19:56 GMT',
+22 verbose headers   vary: 'accept-encoding, accept',
+22 verbose headers   server: 'cloudflare' }
+23 silly get cb [ 304,
+23 silly get   { date: 'Wed, 08 Aug 2018 04:42:14 GMT',
+23 silly get     connection: 'keep-alive',
+23 silly get     'set-cookie': [ '__cfduid=d42059ba43799dbf06ff5b4cc2eebc0901533703334; expires=Thu, 08-Aug-19 04:42:14 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     'cf-cache-status': 'MISS',
+23 silly get     'cf-ray': '446f50b148995f8d-LAS',
+23 silly get     etag: '"494c9e75626f23d5aafcd3f7f43d22f9"',
+23 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+23 silly get     'last-modified': 'Mon, 28 May 2018 22:19:56 GMT',
+23 silly get     vary: 'accept-encoding, accept',
+23 silly get     server: 'cloudflare' } ]
+24 verbose etag https://registry.npmjs.org/fourdsocketproxy from cache
+25 verbose get saving fourdsocketproxy to /home/jmoore/.npm/registry.npmjs.org/fourdsocketproxy/.cache.json
+26 verbose correctMkdir /home/jmoore/.npm correctMkdir not in flight; initializing
+27 silly install normalizeTree
+28 silly loadCurrentTree Finishing
+29 silly loadIdealTree Starting
+30 silly install loadIdealTree
+31 silly cloneCurrentTree Starting
+32 silly install cloneCurrentTreeToIdealTree
+33 silly cloneCurrentTree Finishing
+34 silly loadShrinkwrap Starting
+35 silly install loadShrinkwrap
+36 silly loadShrinkwrap Finishing
+37 silly loadAllDepsIntoIdealTree Starting
+38 silly install loadAllDepsIntoIdealTree
+39 silly rollbackFailedOptional Starting
+40 silly rollbackFailedOptional Finishing
+41 silly runTopLevelLifecycles Finishing
+42 silly install printInstalled
+43 verbose stack Error: Refusing to install fourdsocketproxy as a dependency of itself
+43 verbose stack     at checkSelf (/usr/lib/node_modules/npm/lib/install/validate-args.js:53:14)
+43 verbose stack     at Array.<anonymous> (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/bind-actor.js:15:8)
+43 verbose stack     at LOOP (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/chain.js:15:14)
+43 verbose stack     at chain (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/chain.js:20:5)
+43 verbose stack     at /usr/lib/node_modules/npm/lib/install/validate-args.js:16:5
+43 verbose stack     at /usr/lib/node_modules/npm/node_modules.bundled/slide/lib/async-map.js:52:35
+43 verbose stack     at Array.forEach (native)
+43 verbose stack     at /usr/lib/node_modules/npm/node_modules.bundled/slide/lib/async-map.js:52:11
+43 verbose stack     at Array.forEach (native)
+43 verbose stack     at asyncMap (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/async-map.js:51:8)
+44 verbose cwd /home/jmoore/Desktop/fourdsocketproxy
+45 error Linux 3.10.0-862.6.3.el7.x86_64
+46 error argv "/usr/bin/node" "/usr/bin/npm" "install" "--upgrade" "fourdsocketproxy"
+47 error node v6.14.3
+48 error npm  v3.10.10
+49 error code ENOSELF
+50 error Refusing to install fourdsocketproxy as a dependency of itself
+51 error If you need help, you may report this error at:
+51 error     <https://github.com/npm/npm/issues>
+52 verbose exit [ 1, true ]

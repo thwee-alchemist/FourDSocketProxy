@@ -9,7 +9,7 @@
   May 28th, 2018
 */
 
-module.exports = async function(options){
+module.exports = function(options){
   var express = require('express');
   var app = express();
   var path = require('path');
@@ -20,6 +20,10 @@ module.exports = async function(options){
   });
   
   var server = require('http').Server(app);
+  
+  // serve static directory
+  app.use(express.static(path.join(__dirname, 'img')));
+  
   var FourDMirror = require(path.join(__dirname, 'FourDMirror.js'));
   var get_port = require('get-port');
   var open = require('open');
@@ -64,7 +68,7 @@ module.exports = async function(options){
         return this.mirror.add_vertex();
       }
 
-      add_edge(a, b, options){
+      add_edge(a, b, options={}){
         options.source = a;
         options.target = b;
         this.io.emit('add edge', options);
