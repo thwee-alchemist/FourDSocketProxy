@@ -64,8 +64,10 @@ module.exports = async function(options){
         return this.mirror.add_vertex();
       }
 
-      add_edge(a, b){
-        this.io.emit('add edge', {source: a, target: b});
+      add_edge(a, b, options){
+        options.source = a;
+        options.target = b;
+        this.io.emit('add edge', options);
         return this.mirror.add_edge();
       }
 
