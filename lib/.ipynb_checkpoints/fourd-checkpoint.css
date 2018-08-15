@@ -20,3 +20,8 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
+.text-label {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+}

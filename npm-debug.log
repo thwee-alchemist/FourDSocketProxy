@@ -1,96 +1,109 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/node',
-1 verbose cli   '/usr/bin/npm',
-1 verbose cli   'install',
-1 verbose cli   '--upgrade',
-1 verbose cli   'fourdsocketproxy' ]
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish' ]
 2 info using npm@3.10.10
 3 info using node@v6.14.3
-4 silly loadCurrentTree Starting
-5 silly install loadCurrentTree
-6 silly install readLocalPackageData
-7 silly fetchPackageMetaData fourdsocketproxy
-8 silly fetchNamedPackageData fourdsocketproxy
-9 silly mapToRegistry name fourdsocketproxy
-10 silly mapToRegistry using default registry
-11 silly mapToRegistry registry https://registry.npmjs.org/
-12 silly mapToRegistry data Result {
-12 silly mapToRegistry   raw: 'fourdsocketproxy',
-12 silly mapToRegistry   scope: null,
-12 silly mapToRegistry   escapedName: 'fourdsocketproxy',
-12 silly mapToRegistry   name: 'fourdsocketproxy',
-12 silly mapToRegistry   rawSpec: '',
-12 silly mapToRegistry   spec: 'latest',
-12 silly mapToRegistry   type: 'tag' }
-13 silly mapToRegistry uri https://registry.npmjs.org/fourdsocketproxy
-14 verbose request uri https://registry.npmjs.org/fourdsocketproxy
-15 verbose request no auth needed
-16 info attempt registry request try #1 at 9:42:14 PM
-17 verbose request id edbf675057c8c261
-18 verbose etag W/"494c9e75626f23d5aafcd3f7f43d22f9"
-19 verbose lastModified Mon, 28 May 2018 22:19:56 GMT
-20 http request GET https://registry.npmjs.org/fourdsocketproxy
-21 http 304 https://registry.npmjs.org/fourdsocketproxy
-22 verbose headers { date: 'Wed, 08 Aug 2018 04:42:14 GMT',
-22 verbose headers   connection: 'keep-alive',
-22 verbose headers   'set-cookie': [ '__cfduid=d42059ba43799dbf06ff5b4cc2eebc0901533703334; expires=Thu, 08-Aug-19 04:42:14 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
-22 verbose headers   'cache-control': 'max-age=300',
-22 verbose headers   'cf-cache-status': 'MISS',
-22 verbose headers   'cf-ray': '446f50b148995f8d-LAS',
-22 verbose headers   etag: '"494c9e75626f23d5aafcd3f7f43d22f9"',
-22 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-22 verbose headers   'last-modified': 'Mon, 28 May 2018 22:19:56 GMT',
-22 verbose headers   vary: 'accept-encoding, accept',
-22 verbose headers   server: 'cloudflare' }
-23 silly get cb [ 304,
-23 silly get   { date: 'Wed, 08 Aug 2018 04:42:14 GMT',
-23 silly get     connection: 'keep-alive',
-23 silly get     'set-cookie': [ '__cfduid=d42059ba43799dbf06ff5b4cc2eebc0901533703334; expires=Thu, 08-Aug-19 04:42:14 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
-23 silly get     'cache-control': 'max-age=300',
-23 silly get     'cf-cache-status': 'MISS',
-23 silly get     'cf-ray': '446f50b148995f8d-LAS',
-23 silly get     etag: '"494c9e75626f23d5aafcd3f7f43d22f9"',
-23 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-23 silly get     'last-modified': 'Mon, 28 May 2018 22:19:56 GMT',
-23 silly get     vary: 'accept-encoding, accept',
-23 silly get     server: 'cloudflare' } ]
-24 verbose etag https://registry.npmjs.org/fourdsocketproxy from cache
-25 verbose get saving fourdsocketproxy to /home/jmoore/.npm/registry.npmjs.org/fourdsocketproxy/.cache.json
-26 verbose correctMkdir /home/jmoore/.npm correctMkdir not in flight; initializing
-27 silly install normalizeTree
-28 silly loadCurrentTree Finishing
-29 silly loadIdealTree Starting
-30 silly install loadIdealTree
-31 silly cloneCurrentTree Starting
-32 silly install cloneCurrentTreeToIdealTree
-33 silly cloneCurrentTree Finishing
-34 silly loadShrinkwrap Starting
-35 silly install loadShrinkwrap
-36 silly loadShrinkwrap Finishing
-37 silly loadAllDepsIntoIdealTree Starting
-38 silly install loadAllDepsIntoIdealTree
-39 silly rollbackFailedOptional Starting
-40 silly rollbackFailedOptional Finishing
-41 silly runTopLevelLifecycles Finishing
-42 silly install printInstalled
-43 verbose stack Error: Refusing to install fourdsocketproxy as a dependency of itself
-43 verbose stack     at checkSelf (/usr/lib/node_modules/npm/lib/install/validate-args.js:53:14)
-43 verbose stack     at Array.<anonymous> (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/bind-actor.js:15:8)
-43 verbose stack     at LOOP (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/chain.js:15:14)
-43 verbose stack     at chain (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/chain.js:20:5)
-43 verbose stack     at /usr/lib/node_modules/npm/lib/install/validate-args.js:16:5
-43 verbose stack     at /usr/lib/node_modules/npm/node_modules.bundled/slide/lib/async-map.js:52:35
-43 verbose stack     at Array.forEach (native)
-43 verbose stack     at /usr/lib/node_modules/npm/node_modules.bundled/slide/lib/async-map.js:52:11
-43 verbose stack     at Array.forEach (native)
-43 verbose stack     at asyncMap (/usr/lib/node_modules/npm/node_modules.bundled/slide/lib/async-map.js:51:8)
-44 verbose cwd /home/jmoore/Desktop/fourdsocketproxy
-45 error Linux 3.10.0-862.6.3.el7.x86_64
-46 error argv "/usr/bin/node" "/usr/bin/npm" "install" "--upgrade" "fourdsocketproxy"
-47 error node v6.14.3
-48 error npm  v3.10.10
-49 error code ENOSELF
-50 error Refusing to install fourdsocketproxy as a dependency of itself
-51 error If you need help, you may report this error at:
-51 error     <https://github.com/npm/npm/issues>
-52 verbose exit [ 1, true ]
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/jmoore/Desktop/fourdsocketproxy',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/jmoore/.npm/fourdsocketproxy/3.0.1/package.tgz not in flight; packing
+9 verbose correctMkdir /home/jmoore/.npm correctMkdir not in flight; initializing
+10 info lifecycle fourdsocketproxy@3.0.1~prepublish: fourdsocketproxy@3.0.1
+11 silly lifecycle fourdsocketproxy@3.0.1~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/home/jmoore/.npm/fourdsocketproxy/3.0.1/package.tgz',
+12 verbose tar pack   '/home/jmoore/Desktop/fourdsocketproxy' ]
+13 verbose tarball /home/jmoore/.npm/fourdsocketproxy/3.0.1/package.tgz
+14 verbose folder /home/jmoore/Desktop/fourdsocketproxy
+15 verbose addLocalTarball adding from inside cache /home/jmoore/.npm/fourdsocketproxy/3.0.1/package.tgz
+16 verbose correctMkdir /home/jmoore/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd fourdsocketproxy@3.0.1
+18 verbose afterAdd /home/jmoore/.npm/fourdsocketproxy/3.0.1/package/package.json not in flight; writing
+19 verbose correctMkdir /home/jmoore/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /home/jmoore/.npm/fourdsocketproxy/3.0.1/package/package.json written
+21 silly publish { name: 'fourdsocketproxy',
+21 silly publish   version: '3.0.1',
+21 silly publish   description: 'A socket bridge between a browser fourd instance and node.js code.',
+21 silly publish   main: 'FourDSocketProxyServer.js',
+21 silly publish   directories: { lib: 'lib' },
+21 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/thwee-alchemist/FourDSocketProxy.git' },
+21 silly publish   author: { name: 'Joshua Marshall Moore' },
+21 silly publish   license: 'ISC',
+21 silly publish   bugs: { url: 'https://github.com/thwee-alchemist/FourDSocketProxy/issues' },
+21 silly publish   homepage: 'https://github.com/thwee-alchemist/FourDSocketProxy#readme',
+21 silly publish   dependencies:
+21 silly publish    { express: '^4.16.3',
+21 silly publish      'get-port': '^3.2.0',
+21 silly publish      open: '0.0.5',
+21 silly publish      path: '^0.12.7',
+21 silly publish      'socket.io': '^2.1.1' },
+21 silly publish   readme: '# FourDSocketProxy\n\n[Joshua Marshall Moore](mailto:moore.joshua@pm.me)\n\nMay 28th, 2018\n\n## Overview\n\n![10 by 10 grid](grid.png)\n\nFourD is a browser library for dynamically displaying force directed graphs. FourDSocketProxy brings that power to Node.js. \n\n## Installation\n\n    npm install fourdsocketproxy\n\n## Usage\n\nFourDSocketProxy comprises two systems, the browser frontend, and the socket server. \n\nTo run fourd, import the init function, and wait for the promise to resolve, like so:\n\n```js\nvar SIZE = 5;\nrequire(\'fourdsocketproxy\')().then(fourd =>{\n    fourd.clear();\n    var options = {cube: {size: 10, color: 0x0000ff}};\n\n    var depths = [];\n    for(var k=0; k<SIZE; k++){\n        var rows = [];\n        for(var i=0; i<SIZE; i++){\n            var column = [];\n            for(var j=0; j<SIZE; j++){\n                column.push(fourd.add_vertex(options));\n                if(j>0){\n                    fourd.add_edge(column[j], column[j-1]);\n                }\n                if(i>0){\n                    fourd.add_edge(column[j], rows[i-1][j]);\n                }\n                if(k>0){\n                    fourd.add_edge(column[j], depths[k-1][i][j]);\n                }\n            }\n            rows.push(column);\n        }\n        depths.push(rows);\n    }\n});\n```\n\n## API\nCalling `require(\'fourdsocketproxy\')` doesn\'t do much, but returns a function; Call it, and you get a promise for a `fourd` object. The `fourd` object defines the following functions:\n\n```js\nvar a = fourd.add_vertex(vertex_options);\nvar b = fourd.add_vertex(vertex_options);\n\nvar e = fourd.add_edge(a, b);\n\nfourd.remove_edge(e);\nfourd.remove_vertex(a);\nfourd.clear();\n```\n\n## Options\nThe add_vertex function takes a small number of options:\n\n```js\nvar options = {cube: {size: 10, color: 0x000000}};\n// or\nvar options = {cube: {size: 10, texture: \'path/to/img.jpg\'}}\n```\n\n## Callbacks\nThe fourd object is an EventEmitter, you can react to clicks on an individual vertex like so: \n\n```js\n// initialization, as above ...\nfourd.on(\'click\', event => {\n    console.log(`mouse click! button: ${event.button_id}, vertex_id: ${event.vertex_id}.`);\n});\n```\n\n## Etc.\nThe FourD frontend runs about 250 vertices. More are possible, but you might want to design around this limitation. \n\n## Acknowledgements\n\nFourDSocketProxy uses \n\n* [three.js](https://threejs.org/), currently release 90, and\n* [jquery](https://jquery.org/).\n\nOn the server, we have \n\n* [express](expressjs.com), and\n* [socket.io](socket.io).\n\nAnd of course many thanks go out to Dr. Todd Veldhuizen for publishing [Dynamic Multilevel Graph Visualization](https://arxiv.org/abs/0712.1549).\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '3d64ec67c52dd21c598e72391d8d2c881a47507a',
+21 silly publish   _id: 'fourdsocketproxy@3.0.1',
+21 silly publish   _shasum: '02dde1c468c6a8b1a9d752344f3e3c0f1a0dcbac',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name fourdsocketproxy
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'fourdsocketproxy',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'fourdsocketproxy',
+26 silly mapToRegistry   name: 'fourdsocketproxy',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/fourdsocketproxy
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /home/jmoore/.npm/fourdsocketproxy/3.0.1/package.tgz
+30 verbose request uri https://registry.npmjs.org/fourdsocketproxy
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 11:15:32 PM
+33 verbose request using bearer token for auth
+34 verbose request id 6349785f2b811d51
+35 http request PUT https://registry.npmjs.org/fourdsocketproxy
+36 http 403 https://registry.npmjs.org/fourdsocketproxy
+37 verbose headers { date: 'Wed, 08 Aug 2018 06:15:34 GMT',
+37 verbose headers   'content-type': 'application/json',
+37 verbose headers   'transfer-encoding': 'chunked',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'set-cookie': [ '__cfduid=d20600c2e57ed8302074e97ad38f1f6db1533708932; expires=Thu, 08-Aug-19 06:15:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+37 verbose headers   'cf-ray': '446fd95c3f8b5f93-LAS',
+37 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+37 verbose headers   server: 'cloudflare',
+37 verbose headers   'content-encoding': 'gzip' }
+38 verbose request invalidating /home/jmoore/.npm/registry.npmjs.org/fourdsocketproxy on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: You cannot publish over the previously published versions: 3.0.1. : fourdsocketproxy
+40 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules.bundled/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules.bundled/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at /usr/lib/node_modules/npm/node_modules.bundled/npm-registry-client/lib/request.js:216:7
+40 verbose stack     at Gunzip.onEnd (zlib.js:227:5)
+40 verbose stack     at emitNone (events.js:91:20)
+40 verbose stack     at Gunzip.emit (events.js:185:7)
+40 verbose stack     at endReadableNT (_stream_readable.js:978:12)
+40 verbose stack     at _combinedTickCallback (internal/process/next_tick.js:80:11)
+40 verbose stack     at process._tickCallback (internal/process/next_tick.js:104:9)
+41 verbose statusCode 403
+42 verbose pkgid fourdsocketproxy
+43 verbose cwd /home/jmoore/Desktop/fourdsocketproxy
+44 error Linux 3.10.0-862.6.3.el7.x86_64
+45 error argv "/usr/bin/node" "/usr/bin/npm" "publish"
+46 error node v6.14.3
+47 error npm  v3.10.10
+48 error code E403
+49 error You cannot publish over the previously published versions: 3.0.1. : fourdsocketproxy
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
