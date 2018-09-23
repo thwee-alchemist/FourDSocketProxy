@@ -1,3 +1,27 @@
+/*
+  Joshua Marshall Moore
+  2018-09-19
+*/
+
+// thanks https://www.sitepoint.com/javascript-decorators-what-they-are/
+function log(target, name, descriptor) {
+  const original = descriptor.value;
+  if (typeof original === 'function') {
+    descriptor.value = function(...args) {
+      console.log(`Arguments: ${args}`);
+      try {
+        const result = original.apply(this, args);
+        console.log(`Result: ${result}`);
+        return result;
+      } catch (e) {
+        console.log(`Error: ${e}`);
+        throw e;
+      }
+    }
+  }
+  return descriptor;
+}
+
 
 /**
  * class Vertex
@@ -70,7 +94,6 @@ class Edge {
 
     this.source = source;
     this.target = target;
-    this.data = data;
     this.id = ++Edge.id;
     
     this.source.edges.add(this);
@@ -78,29 +101,6 @@ class Edge {
     
     this.count = 0;
     this.order = Math.random();
-    
-    return this;
-  }
-  
-  /*
-   * Adds this edge to the specified graph. 
-   */
-  add_to(graph){
-    graph.add(this);
-    if(this.graphs){
-      this.graphs.add(graph);
-    }else{
-      this.graphs = new Set([graph]);
-    }
-    return this;
-  }
-  
-  /*
-   * Removes this vertex from the specified graph.
-   */
-  delete_from(graph){
-    graph.delete(this);
-    this.graphs.delete(graph);
     
     return this;
   }
@@ -182,7 +182,6 @@ class Graph {
     as well. 
   */
   delete(vertex_or_edge){
-    
     console.log(`Graph ${this.id}: deleting ${vertex_or_edge}`);
     
     if(typeof vertex_or_edge == "Vertex"){
@@ -272,6 +271,43 @@ class PriorityQueue {
 }
 
 /**
+ * class DMVertex
+ * 
+ * Encapsulates a vertex with a set union operation
+ */
+class DMVertex extends Vertex {
+  constructor(data){
+    super(data);
+    this.data = new Set(arguments);
+  }
+
+  union(dmvertex){
+    return new DMVertex(this, dmvertex);
+  }
+
+  has(vertex){
+    return this.data.has(vertex) 
+      || [...this.data].map(
+        v => v instanceof DMVertex && v.data.has(vertex)
+      );
+  }
+}
+DMVertex.all = new Set();
+
+/**
+ * class DMEdge
+ * 
+ * Encapsulates an edge with a count for multiple edges across the 
+ * same vertices. 
+ */
+class DMEdge extends Edge {
+  constructor(source, target, data){
+    super(source, target, data);
+    this.count = 0;
+  }
+}
+
+/**
  * class DynamicMatching
  * 
  * responsible for maintaining coarser and coarser versions of an
@@ -279,42 +315,215 @@ class PriorityQueue {
  */
 class DynamicMatching {
   constructor(finer, n){
-    console.log(`constructing Dynamic Matching ${n}...`)
-    this.V = new Map(); // a map from finer to coarsar vertex. 
-    this.E = new Set();
-    this.S = new Set();
-    this.M = new Map();
-    this.pq = new PriorityQueue();
-    this.match_equation_results = new Map();
-    this.n = n;
     this.id = ++DynamicMatching.id;
-    this.finer = finer;
-    
-    var finer_add = finer.add;
-    finer.add = (v_or_e) => {
-      finer_add.call(this.finer, v_or_e);
-      this.add(v_or_e);
+
+    var finer_add = finer.add.bind(finer);
+    var finer_delete = finer.delete.bind(finer);
+
+    finer.add = (entity) => {
+      finer_add(entity);
+      if(entity instanceof Vertex || entity instanceof DMVertex){
+        var v_prime = new DMVertex(entity);  
+        this.add(v_prime);
+      }
+
+      if(entity instanceof Edge || entity instanceof DMEdge){
+        var v1_prime = this.V.get(entity.source);
+        if(v1_prime === undefined){
+          v1_prime = new DMVertex(entity.source);
+          this.add(v1_prime);
+        }
+        var v2_prime = this.V.get(entity.target);
+        if(v2_prime === undefined){
+          v2_prime = new DMVertex(entity.target);
+          this.add(v2_prime);
+        }
+        var e_prime = new DMEdge(v1_prime, v2_prime);
+
+        this.add(e_prime);
+      }
+
+      this.process_queue();
     }
 
-    var finer_delete = finer.delete;
-    finer.delete = (v_or_e) => {
-      this.delete(v_or_e);
-      finer_delete.call(finer, v_or_e);
+    finer.delete = (entity) => {
+      if(entity instanceof Vertex || entity instanceof DMVertex){
+        v_prime = this.V.get(entity);
+        this.delete(v_prime);
+      }
+      finer_delete(entity);
+      this.process_queue();
     }
 
     this.finer = finer;
-    this.coarser = --n ? new DynamicMatching(this, n) : null;
-    
-    this.finer.coarser = this;
-    return this;
+    this.V = new Map();
+    this.E = new Set();
+    this.pq = new PriorityQueue();
+    this.coarser = n > 0 ? new DynamicMatching(this, n-1) : null;
+    this.m = new Map();
   }
-  
-  change_propagation(){
+
+  add(v_or_e){
+    if(v_or_e instanceof Vertex || v_or_e instanceof DMVertex){
+      this.add_vertex(v_or_e);
+    }
+    if(v_or_e instanceof Edge || v_or_e instanceof DMEdge){
+      this.add_edge(v_or_e);
+    }
+  }
+
+  add_vertex(v){
+    this.V.set(v, new DMVertex(v));
+  }
+
+  add_edge(e){
+    var v1_prime = this.V.get(e.source); // v1 prime
+    var v2_prime = this.V.get(e.target); // v2 prime
+    var e_prime = [...this.E].find(ep => {
+      return ep.source == v1_prime && ep.target == v2_prime;
+    });
+    if(!e_prime){
+      e_prime = new DMEdge(v1_prime, v2_prime);
+    }
+    this.pq.enqueue(e_prime, e_prime.order);
+  }
+
+  delete(v_or_e){
+    if(v_or_e instanceof Vertex || v_or_e instanceof DMVertex){
+      return this.delete_vertex(v_or_e);
+    }
+
+    if(v_or_e instanceof Edge || v_or_e instanceof DMEdge){
+      return this.delete_edge(v_or_e);
+    }
+  }
+
+  delete_vertex(v){
+    [...v.edges].map(e => this.delete_edge(e));
+    this.V.delete(v);
+  }
+
+  delete_edge(e){
+    if(this.E.has(e)){
+      this.unmatch(e);
+    }
+
+    if(this.coarser){
+      var e_prime = [...this.coarser.E].find(e_prime => {
+        var v1_prime = e_prime.source;
+        var v2_prime = e_prime.target;
+        return e_prime.source.has(e.source) 
+          && e_prime.target.has(e.target);
+      });
+
+      e_prime.count--;
+      if(e_prime.count == 0){
+        this.coarser.delete(e_prime);
+      }
+
+      if(e.source.edges.size == 0){
+        this.coarser.delete(this.coarser.V.get(e.source));
+      }
+      if(e.target.edges.size == 0){
+        this.coarser.delete(this.coarser.V.get(e.target));
+      }
+    }
+
+    [...this.E]
+    .filter(edge => this.depends(e, edge))
+    .map(edge => this.pq.enqueue(edge, edge.order));
+  }
+
+  depends(e1, e2){
+    var priority = e1.order < e2.order;
+    var share_vertex = e1.shares_vertex(e2);
+    return priortiy && share_vertex;
+  }
+
+  match(e){
+    [...this.E]
+    .filter(e2 => this.depends(e, e2) && this.E.has(e2))
+    .map(e2 => this.unmatch(e2));
+    
+    if(this.coarser){
+      var v1_prime = this.coarser.V.get(e.source);
+      var v2_prime = this.coarser.V.get(e.target);
+      this.coarser.delete(v1_prime);
+      this.coarser.delete(v2_prime);
+      
+      var v1_u_v2 = new DMVertex(e.source, e.target);
+      this.coarser.add(v1_u_v2);
+
+      [...this.E]
+      .filter(edge => {
+        var count = 0;
+        count += edge.source == e.source ? 1 : 0;
+        count += edge.target == e.source ? 1 : 0;
+        count += edge.source == e.target ? 1 : 0;
+        count += edge.target == e.target ? 1 : 0;
+        return count == 1;
+      })
+      .map(edge => {
+        var initial_vertex = edge.source == e.source ? edge.source : e.target;
+        var corresponding_vertex = this.coarser.V.get(initial_vertex);
+        var corresponding_edge = new DMEdge(v1_u_v2, corresponding_vertex);
+        this.coarser.add(corresponding_edge);
+      });
+
+      [...this.E]
+      .filter(edge => this.depends(e, edge))
+      ,map(edge => this.pq.enqueue(edge));
+    }
+
+    [...this.E]
+    .filter(edge => this.depends(e, edge))
+    .map(edge => this.pq.enqueue(edge, edge.order));
+  }
+
+  unmatch(e){
+    if(this.coarser){
+      var v1_u_v2 = this.coarser.V.find(
+        v => v.has(e.source) && v.has(e.target)
+      );
+
+      [...v1_u_v2.edges]
+      .map(incident_edge => this.coarser.delete(incident_edge));
+
+      this.coarser.delete(v1_or_v2);
+
+      this.coarser.V.set(e.source, new DMVertex(e.source));
+      this.coarser.V.set(e.target, new DMVertex(e.target));
+
+      [...e.source.edges]
+      .map(edge => this.coarser.add(new DMEdge(
+        this.coarser.V.get(e.source),
+        this.coarser.V.get(edge.source == e.source ? edge.target : edge.target)
+      )));
+      [...e.target.edges]
+      .map(edge => this.coarser.add(new DMEdge(
+        this.coarser.V.get(e.target),
+        this.coarser.Vget(edge.target == e.target ? edge.source : edge.target)
+      )));
+    }
+
+    [...this.E]
+    .filter(edge => this.depends(e, edge))
+    .map(edge => this.pq.enqueue(edge, edge.order));
+  }
+
+  match_equation(e){
+    var m = [...this.E]
+    .filter(edge => this.depends(edge, e))
+    .every(edge => !this.match_equation(edge));
+    this.m.set(e, m);
+    return m;
+  }
+
+  process_queue(){
     while(!this.pq.empty()){
       var e = this.pq.dequeue();
       var m = this.match_equation(e);
-      if(m != this.match_equation_results.get(e)){
-        this.match_equation_results.set(e, m);
+      if(m != this.m.get(e)){
         if(m){
           this.match(e);
         }else{
@@ -322,232 +531,17 @@ class DynamicMatching {
         }
       }
     }
-    
-    if(this.coarser){
-      this.coarser.change_propagation();
-    }
-  }
-  
-  match_equation(e){
-    if(this.E.size == 0){
-      return true;
-    }
-    
-    var m = true;
-    for(var edge in this.E){
-      m = m && !this.depends(edge, e);
-    }
-    
-    return m;
-  }
-  
-  match(e){
-    console.log(`match(${e})`);
-    // "For each edge e' where e -> e' ..."
-    [...this.E]
-      .filter(e_prime => this.depends(e, e_prime))
-      .map(e_prime => {
-        // "... if e' is matched, ..."
-        if(this.M.has(e_prime)){
-          // "... then unmatch(e')."
-          this.unmatch(e_prime);
-        }
-        // "Delete vertices v1_prime and v2_prime from the 
-        // coarser graph."
-        var v1_prime = this.M.get(e.source);
-        this.V.delete(v1_prime);
-        this.M.delete(v1_prime);
-
-        var v2_prime = this.M.get(e.target);
-        this.V.delete(v2_prime);
-        this.M.delete(v2_prime);
-
-        // Create a new vertex v1 U v2 in G'.
-        var v1_u_v2 = new Vertex(new Set([edge.source, edge.target]));
-        this.add(v1_u_v2);
-        
-        // "For all edges e = (v, v') in G incident on v1 or v2 
-        // (but not both), add a corresponding edge to or from 
-        // v1 ∪ v2 in G'."
-        
-        var add_e_prime_to_G_prime = (cv, edge) => {
-          // cv: corresponding vertex
-          var edge = new Edge(v1_u_v2, cv); 
-          this.add(edge);
-        };
-      
-        [...edge.source.edges]
-        .filter(pie => pie != edge)// v1.edges that are not this edge
-        // now we have incident edges
-        .filter(pie => !pie.data.has(edge.source))
-        // potentially incident edge
-        .map(ie => {
-          if((edge.source == ie.source) || (edge.target == ie.source)){
-            var edge = new Edge(this.V.get(ie.source), v1_u_v2);
-            this.add(edge);
-          }
-          if((edge.source == ie.target) || (edge.target == ie.target)){
-            var edge = new Edge(this.V.get(ie.target), v1_u_v2);
-            this.add(edge);
-          }
-        });
-
-        [...edge.target.edges]
-        .filter(pie => pie != edge)
-        .filter(pie => !pie.data.has(edge.target))
-        .map(ie => {
-          if((edge.target == ie.target || edge.source == ie.target)){
-            var edge = new Edge(this.V.get(ie.target), v1_u_v2);
-            this.add(edge);
-          }
-          if((edge.target == ie.source) || (edge.target == ie.source)){
-            var edge = new Edge(this.coarser.V.get(ie.source), v1_u_v2);
-            this.add(edge);
-          }
-        })
-          
-          // might need a third check to see if its not this edge.   
-      });
-        
-      var v_prime = new Vertex(new Set([e.source, e.target]));
-      this.E.add(v_prime);
-        // 
-    
-    // "Both match(e) and unmatch(e) add the dependent edges of e to the queue..."
-    this.pq.enqueue(e, e.order);
-  }
-
-  unmatch(e){
-    console.log(`unmatch(${e})`);
-    if(this.coarser){
-      // ".delete any edges in G' incident on v1 ∪ v2.
-      [...this.coarser.E]
-        .filter(edge => edge.source == e.source
-                || edge.source == e.target
-                || edge.target == e.source
-                || edge.target == e.target)
-        .map(edge => { 
-          this.delete(this.V.get(edge.source));
-          this.delete(this.V.get(edge.target));
-        });
-      
-      // ". Delete the vertex v1 ∪ v2 from G'." 
-      this.delete(this.V.get(e.source));
-      this.delete(this.V.get(e.target)); // not sure this is necessary
-      
-      // "For each edge incident on v1 or v2 in G, add a 
-      // corresponding edge to G'."
-      [...v1.edges, ...v2.edges].map(incident_edge => {
-        this.add(new Edge(
-          this.V.get(incident_edge.source), 
-          this.V.get(incident_edge.target)
-        ));
-      });
-      
-      // "For each e' such that e → e', add e' to the queue."
-      for(var edge in this.E){
-        if(this.depends(e, edge)){
-          this.pq.enqueue(edge, edge.order);
-        }
-      }
-    }
-  }
-  
-  add(v_or_e){
-    if(v_or_e === undefined){
-      throw Error("nothing to add!")
-    }
-    console.log(`Dynamic Matching ${this.n}: adding ${v_or_e}`);
-
-    if(v_or_e instanceof Vertex){
-      var vertex = v_or_e;
-      
-      var v_prime = new Vertex(vertex);
-      this.V.set(vertex, v_prime);
-    }
-    
-    if(v_or_e instanceof Edge){
-      var edge = v_or_e;
-      
-      if(this.match_equation(edge)){
-        this.match(edge);
-      }
-
-      // "Increase the count of (v1', v2') in E' (possibly adding edge if not 
-      // already present.
-      if([...this.V]
-        .filter(v => v.data == edge)
-        .map(v => {
-          v.data.count++;
-        })
-        .length == 0)
-      {
-        var e_prime = new Edge(
-          this.V.get(edge.source),
-          this.V.get(edge.target)
-        )
-        this.add(e_prime);
-      }else{
-        [...this.E]
-        .find(e => e.data.has(edge))
-        .count++;
-      }
-      
-      this.pq.enqueue(edge, edge.order);
-    }
-    this.change_propagation();
-  }
-  
-  priority(e1, e2){
-    return this.orders.get(e1) < this.orders.get(e2);
-  }
-  
-  delete(v_or_e){
-    console.log(`deleting ${v_or_e}`);
-    if(v_or_e instanceof Vertex){
-      var vertex = v_or_e;
-      for(var edge in vertex.edges){
-        edge.count--;
-        if(edge.count == 0){
-          this.delete(edge);
-        }
-      }
-    }
-    
-    if(v_or_e instanceof Edge){
-      var edge = v_or_e;
-      if(this.matching.has(edge)){
-        // "If e is in the matching then unmatch(e)."
-        this.unmatch(edge);
-        
-        // 
-        if(this.coarser){
-          var vertex = [...this.coarser.E].find(v => v.data == edge);
-          if(!(--vertex.data.count)){
-            this.coarser.delete(vertex);
-          }
-        }
-        
-        this.V.delete(edge)
-      }
-    }
-    
-    this.change_propagation();
-  }
-  
-  depends(e1, e2){
-    return (e1.order < e2.order) && e1.shares_vertex(e2);
   }
 
   toString(){
-    return `Dynamic Matching ${this.id}`
+    return `Dynamic Matching ${this.id}`;
   }
 }
 DynamicMatching.id = 0;
 
 var graph = new Graph();
 
-var dm = new DynamicMatching(graph, 4);
+var dm = new DynamicMatching(graph, 5);
 
 var v1 = new Vertex(null);
 var v2 = new Vertex(null);
