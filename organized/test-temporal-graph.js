@@ -1,3 +1,11 @@
+/*
+  test-temporal-graph.js
+  Joshua Marshall Moore
+  October 20th, 2018
+  
+  moore.joshua@pm.me
+*/
+
 
 var Util = require('./Util.js');
 var DynamicMatching = require('./DynamicMatching.js');

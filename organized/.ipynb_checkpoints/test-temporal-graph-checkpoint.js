@@ -1,6 +1,14 @@
+/*
+  test-temporal-graph.js
+  Joshua Marshall Moore
+  October 20th, 2018
+  
+  moore.joshua@pm.me
+*/
 
-var DynamicMatching = require('./DynamicMatching.js');
+
 var Util = require('./Util.js');
+var DynamicMatching = require('./DynamicMatching.js');
 var Vertex = require('./Vertex.js');
 var Edge = require('./Edge.js');
 var Graph = require('./Graph.js');
@@ -8,9 +16,9 @@ var Range = require('./Range.js');
 var TemporalGraph = require('./TemporalGraph.js');
 
 var graph = new Graph();
-var dm = new DynamicMatching(graph, 1);
+var dm = new DynamicMatching(graph, 0);
 var tgraph = new TemporalGraph(graph);
-var tdm = new TemporalGraph(dm);
+tgraph.t = new Range(0, 0); // a point, technically speaking...
 
 
 var v1 = new Vertex();
@@ -53,4 +61,15 @@ tgraph.add(e5);
 tgraph.add(e1);
 tgraph.add(e4);
 
-console.log(Util.print_all(tgraph));
+console.log(Util.print_all(tgraph, Util.also));
+console.log(dm);
+
+// Graph.prototype.layout.apply(dm);
+// console.dir(dm);
+
+tgraph.t = new Range(3,4);
+console.log(Util.print_all(tgraph, Util.also));
+
+tgraph.t = new Range(0,0);
+console.log(Util.print_all(tgraph, Util.also));
+
