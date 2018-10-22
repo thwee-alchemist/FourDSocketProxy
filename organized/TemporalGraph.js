@@ -3,6 +3,7 @@ var Util = require('./Util.js');
 var Range = require('./Range.js');
 var Vertex = require('./Vertex.js');
 var Edge = require('./Edge.js');
+var DifferenceGraph = require('./DifferenceGraph.js');
 
 
 class TemporalGraph{
@@ -15,7 +16,6 @@ class TemporalGraph{
     this.E = new Set();
     
     this.graph = graph;
-    this.layout = graph.layout;
     
     this.id = ++TemporalGraph.id;
     
@@ -23,7 +23,7 @@ class TemporalGraph{
   }
   
   set t(range){
-    var old = Util.deepClone(this);
+    var old = Util.deep_clone(this);
     this._t = range;
     
     this.V = new Set([...this.graph.V].filter(v => range.contains(v.t)));

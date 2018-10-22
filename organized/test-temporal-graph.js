@@ -10,6 +10,7 @@ var TemporalGraph = require('./TemporalGraph.js');
 var graph = new Graph();
 var dm = new DynamicMatching(graph, 0);
 var tgraph = new TemporalGraph(graph);
+tgraph.t = new Range(0, 0); // a point, technically speaking...
 
 
 var v1 = new Vertex();
@@ -55,8 +56,12 @@ tgraph.add(e4);
 console.log(Util.print_all(tgraph, Util.also));
 console.log(dm);
 
-tgraph.layout.apply(dm);
-console.dir(dm);
+// Graph.prototype.layout.apply(dm);
+// console.dir(dm);
 
-tgraph.t = new Range(-1, 2);
+tgraph.t = new Range(3,4);
+console.log(Util.print_all(tgraph, Util.also));
+
+tgraph.t = new Range(0,0);
+console.log(Util.print_all(tgraph, Util.also));
 

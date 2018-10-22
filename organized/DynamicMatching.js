@@ -26,9 +26,7 @@ class DynamicMatching {
   constructor(finer, n){
     this.id = ++DynamicMatching.id;
     
-    this.finer = finer; // the base object
-    
-    finer.coarser = this; // a doubly linked list
+    this.finer = finer; // the base object 
     this.V = new Map(); // holds the vertices of this dynamic matching
     this.E = new Set(); // holds the edges of this dynamic matching
     this.pq = new PriorityQueue(); // ge
@@ -40,6 +38,7 @@ class DynamicMatching {
     }
     
     if(finer){
+      finer.coarser = this; // a doubly linked list
 
       var finer_add = finer.add.bind(finer);
       var finer_delete = finer.delete.bind(finer);

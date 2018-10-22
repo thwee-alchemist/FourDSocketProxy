@@ -1,6 +1,5 @@
 var Vertex = require('./Vertex.js');
 var Edge = require('./Edge.js');
-var TemporalGraph = require('./TemporalGraph.js');
 
 var LEVELS = 0;
 
@@ -122,6 +121,7 @@ function assign(target, varArgs, ) { // .length of function is 2
 }
 
 /*
+  from the internets
   set operations
 */
 function union(a,b){ return new Set([...a, ...b]) }
@@ -134,6 +134,7 @@ function subtract(a, b){
 }
 
 /**
+ * from the internets
  * Simple object check.
  * @param item
  * @returns {boolean}
@@ -143,6 +144,7 @@ function isObject(item) {
 }
 
 /**
+ * from the internets
  * Deep merge two objects.
  * @param target
  * @param ...sources
@@ -165,7 +167,8 @@ function deep_assign(target, ...sources) {
   return deep_assign(target, ...sources);
 }
   
-function deepClone(obj, hash = new WeakMap()) {
+// from the internet
+function deep_clone(obj, hash = new WeakMap()) {
   if (Object(obj) !== obj) return obj; // primitives
   if (obj instanceof Set) return new Set(obj); // See note about this!
   if (obj instanceof Map) return new Map(obj);
@@ -176,10 +179,10 @@ function deepClone(obj, hash = new WeakMap()) {
                : Object.create(null);
   hash.set(obj, result);
   if (obj instanceof Map)
-      Array.from(obj, ([key, val]) => result.set(key, deepClone(val, hash)) );
+    Array.from(obj, ([key, val]) => result.set(key, deepClone(val, hash)) );
   return Object.assign(result, ...Object.keys(obj).map (
-      key => ({ [key]: deepClone(obj[key], hash) }) ));
-}
+    key => ({ [key]: deep_clone(obj[key], hash) }) ));
+};
 
 module.exports = {
   coarser: coarser,
@@ -194,5 +197,5 @@ module.exports = {
   difference: difference,
   subtract: subtract, 
   deep_assign: deep_assign,
-  deepClone: deepClone
-}
+  deep_clone: deep_clone
+};
