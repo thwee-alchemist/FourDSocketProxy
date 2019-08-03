@@ -1,5 +1,7 @@
 # FourDSocketProxy
 
+**Deprecated** Use [fourdd](https://github.com/thwee-alchemist/fourdd)
+
 [Joshua Marshall Moore](mailto:moore.joshua@pm.me)
 
 May 28th, 2018
